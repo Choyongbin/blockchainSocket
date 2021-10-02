@@ -9,6 +9,7 @@ app.set('view engine', 'ejs')
 app.use(express.static('public'))
 
 const users = []
+const socketId = []
 
 app.get('/', (req, res) => {
   res.redirect(`/${uuidV4()}`)
@@ -20,17 +21,26 @@ app.get('/:room', (req, res) => {
 
 io.on('connection', socket => {
   socket.on('join-room', (roomId, userId) => {
-    console.log(userId)
+    //console.log(userId)
     socket.join(roomId)
+    socketId.push(socket.id)
     users.push(userId)
 
     socket.broadcast.to(roomId).emit('user-connected', userId)
 
-    socket.broadcast.to(roomId).emit('userId', JSON.stringify(users))
-    console.log(JSON.stringify(users))
+    io.to(socket.id).emit('userId', JSON.stringify(users))
+    //socket.broadcast.to(roomId).emit('userId', JSON.stringify(users))
+    //console.log(JSON.stringify(users))
 
     socket.on('disconnect', () => {
+      //console.log('disconnect')
       socket.broadcast.to(roomId).emit('user-disconnected', userId)
+      for(let i = 0; i<users.length; i++){
+        if(users[i] === userId){
+          users.splice(i,1)
+          i--;
+        }
+      }
     })
   })
 })
