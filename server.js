@@ -1,20 +1,24 @@
-const { json } = require("express");
 const express = require("express");
 const app = express();
-const server = require("http").Server(app);
-const io = require("socket.io")(server);
-const { v4: uuidV4 } = require("uuid");
 
-app.set("view engine", "ejs");
-app.use(express.static("public"));
+const server = require("http").Server(app);
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
+});
+const { v4: uuidV4 } = require("uuid");
 
 const PORT = process.env.PORT ?? 3003;
 
 const users = [];
 
+app.set("view engine", "ejs");
+app.use(express.static("public"));
 app.get("/", (req, res) => {
   console.log("handle");
-  // res.redirect(`/${uuidV4()}`);
+  res.status(200).json({ message: "hi" }).end();
 });
 
 app.get("/:room", (req, res) => {
@@ -48,5 +52,15 @@ io.on("connect", (socket) => {
     });
   });
 });
+
+const { ExpressPeerServer } = require("peer");
+const peerServer = ExpressPeerServer(server, {
+  debug: true,
+  path: "/",
+});
+app.use("/peerjs", peerServer);
+
+const cors = require("cors");
+app.use(cors());
 
 server.listen(PORT);
