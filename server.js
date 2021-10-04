@@ -53,13 +53,13 @@ io.on("connect", (socket) => {
   });
 });
 
-const { ExpressPeerServer } = require("peer");
-const peerServer = ExpressPeerServer(server, {
-  proxied: true,
-  debug: true,
-});
-app.use("/peerjs", peerServer);
-peerServer.on("connection", () => console.log("peerServer is conencted"));
+// const { ExpressPeerServer } = require("peer");
+// const peerServer = ExpressPeerServer(server, {
+//   proxied: true,
+//   debug: true,
+// });
+// app.use("/peerjs", peerServer);
+// peerServer.on("connection", () => console.log("peerServer is conencted"));
 
 const cors = require("cors");
 app.use(cors());
