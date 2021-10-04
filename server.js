@@ -57,9 +57,9 @@ const { ExpressPeerServer } = require("peer");
 const peerServer = ExpressPeerServer(server, {
   proxied: true,
   debug: true,
-  path: "/peerjs",
 });
 app.use("/peerjs", peerServer);
+peerServer.on("connection", () => console.log("peerServer is conencted"));
 
 const cors = require("cors");
 app.use(cors());
