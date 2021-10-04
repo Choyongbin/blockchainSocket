@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "devStart": "nodemon server.js",
+    "devStart": "NODE_ENV=development nodemon server.js",
     "deploy": "forever start --uid=$NPM_PACKAGE_NAME server.js PORT=3013"
   },
   "keywords": [],

@@ -10,7 +10,7 @@ const io = require("socket.io")(server, {
 });
 const { v4: uuidV4 } = require("uuid");
 
-const PORT = process.env.PORT ?? 3003;
+const PORT = process.env.NODE_ENV === "development" ? 3003 : 3013;
 
 const users = [];
 
