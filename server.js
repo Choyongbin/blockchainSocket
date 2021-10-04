@@ -21,9 +21,9 @@ app.get("/", (req, res) => {
   res.status(200).json({ message: "hi" }).end();
 });
 
-app.get("/:room", (req, res) => {
-  res.render("room", { roomId: req.params.room });
-});
+// app.get("/:room", (req, res) => {
+//   res.render("room", { roomId: req.params.room });
+// });
 
 const currentRoomId = "currentRoom" ?? uuidV4();
 io.on("connect", (socket) => {
