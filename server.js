@@ -55,10 +55,11 @@ io.on("connect", (socket) => {
 
 const { ExpressPeerServer } = require("peer");
 const peerServer = ExpressPeerServer(server, {
+  proxied: true,
   debug: true,
   path: "/peerjs",
 });
-app.use(peerServer);
+app.use("/peerjs", peerServer);
 
 const cors = require("cors");
 app.use(cors());
