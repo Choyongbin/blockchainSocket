@@ -10,7 +10,7 @@ const io = require("socket.io")(server, {
 });
 const { v4: uuidV4 } = require("uuid");
 
-const PORT = process.env.PORT ?? 3003;
+const PORT = process.env.NODE_ENV === "development" ? 3003 : 3013;
 
 const users = [];
 
@@ -21,9 +21,9 @@ app.get("/", (req, res) => {
   res.status(200).json({ message: "hi" }).end();
 });
 
-app.get("/:room", (req, res) => {
-  res.render("room", { roomId: req.params.room });
-});
+// app.get("/:room", (req, res) => {
+//   res.render("room", { roomId: req.params.room });
+// });
 
 const currentRoomId = "currentRoom" ?? uuidV4();
 io.on("connect", (socket) => {
@@ -53,12 +53,13 @@ io.on("connect", (socket) => {
   });
 });
 
-const { ExpressPeerServer } = require("peer");
-const peerServer = ExpressPeerServer(server, {
-  debug: true,
-  path: "/",
-});
-app.use("/peerjs", peerServer);
+// const { ExpressPeerServer } = require("peer");
+// const peerServer = ExpressPeerServer(server, {
+//   proxied: true,
+//   debug: true,
+// });
+// app.use("/peerjs", peerServer);
+// peerServer.on("connection", () => console.log("peerServer is conencted"));
 
 const cors = require("cors");
 app.use(cors());
